@@ -56,11 +56,11 @@ module Workflow
 
           states.each do |state|
             define_singleton_method("with_#{state}_state") do
-              where("#{table_name}.#{self.workflow_column.to_sym} = ?", state.to_s)
+              where(arel_table[self.workflow_column.to_sym].eq(state.to_s))
             end
 
             define_singleton_method("without_#{state}_state") do
-              where.not("#{table_name}.#{self.workflow_column.to_sym} = ?", state.to_s)
+              where(arel_table[self.workflow_column.to_sym].not_eq(state.to_s))
             end
           end
         end
